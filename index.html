@@ -66,51 +66,23 @@
                 <span data-bind="text: themeTitle"></span>
         </h2>
         <div class="row">
-            <div class="col-sm-4">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <div class="panel panel-default slideInLeft animate">
-                            <div class="panel-heading">
-                            <h3>Robust</h3></div>
-                            <div class="panel-body">
-                                <p>There is other content and snippets of details or features that can be placed here..</p>
-                                <hr>GO
-                                <hr>
+            <ul data-bind="foreach: challenges">
+            <div class="col-sm-4">                
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <div class="panel panel-default slideInLeft animate">
+                                <div class="panel-heading">
+                                <h3 data-bind='text: name'></h3></div>
+                                <div class="panel-body">
+                                    <p>There is other content and snippets of details or features that can be placed here..</p>
+                                    <hr>GO
+                                    <hr>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div>                
             </div>
-            <div class="col-sm-4 text-center">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <div class="panel panel-default slideInUp animate">
-                            <div class="panel-heading">
-                            <h3>Simple</h3></div>
-                            <div class="panel-body">
-                                <p>There is other content and snippets of details or features that can be placed here..</p>
-                                <hr>GO
-                                <hr>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4 text-center">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <div class="panel panel-default slideInRight animate">
-                            <div class="panel-heading">
-                            <h3>Clean</h3></div>
-                            <div class="panel-body">
-                                <p>There is other content and snippets of details or features that can be placed here..</p>
-                                <hr>GO
-                                <hr>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </ul>
         </div>
         <!--/row-->
         <div class="row">
@@ -345,7 +317,19 @@
 <script src="js/sammy.js"></script>
 <script>
 var tc; //TourChamp
-var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_123'},{name:"theme name 456",desc:'my desc 2',points:20,id:'theme_id_456'}];
+var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_123',
+    challenges: [
+        {name: 'challenge1', id: 'challenge_id_1'},
+        {name: 'challenge2', id: 'challenge_id_2'},
+        {name: 'challenge3', id: 'challenge_id_3'},
+        {name: 'challenge4', id: 'challenge_id_4'},
+        {name: 'challenge5', id: 'challenge_id_5'},
+        {name: 'challenge6', id: 'challenge_id_6'},
+        {name: 'challenge7', id: 'challenge_id_7'},
+        ]
+},
+
+{name:"theme name 456",desc:'my desc 2',points:20,id:'theme_id_456'}];
 set = function(field,val) { tc[field](val) };
 var lastSection = null;
 show = function(sectionID) { 
@@ -362,12 +346,15 @@ function vm() {
   self.color = ko.observable("blue");
   self.foo = ko.observable();
 
-  
+  //city view
   self.city = ko.observable("Tel Aviv");
-  self.title = ko.observable("");
-  self.themeTitle = ko.observable("");  
-
+  self.title = ko.observable("");  
   self.themes = ko.observable(defThemes)
+  
+  //theme view
+  self.themeTitle = ko.observable("");  
+  self.challenges = ko.observable("");  
+
   self.showCity = function(themes) {
     self.title('Themes');
     show('#section5');
@@ -375,6 +362,7 @@ function vm() {
 
   self.showTheme = function(theme) {
     self.themeTitle('Theme info for '+theme.id);
+    self.challenges = theme.challenges;
     show("#section2");
   }
 
