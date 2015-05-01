@@ -2,27 +2,23 @@
     <p>City: <strong data-bind="text: city"></strong></p>
     <input placeholder='other city?' data-bind="textInput: city">
 
-    <!-- Folders -->
-<!--     <ul class="folders" data-bind="foreach: folders">
-      <li data-bind="text: $data, 
-      css: { selected: $data == $root.chosenFolderId() },
-      click: $root.goToFolder"></li>
-    </ul>
- -->
-    <!-- Themes grid -->
-    <h1 data-bind="text: title"></h1>
-    <table class="">
-      <thead><tr><th>Name</th><th>Points</th>
-      <tbody data-bind="foreach: themes">
-        <tr>
-          <td data-bind="text: name"></td>
-          <td data-bind="text: points"></td>
-        </tr>     
-      </tbody>
-    </table>
+    <section class="section sectionThemes">
+      <h1 data-bind="text: title"></h1>
+      <table class="">
+        <thead><tr><th>Name</th><th>Points</th>
+        <tbody data-bind="foreach: themes">
+          <tr>
+            <td>
+              <a data-bind="attr: { href: url, title: details }">
+                  Report
+              </a>
+            </td>
+            <td data-bind="text: points"></td>
+          </tr>     
+        </tbody>
+      </table>
+    </section>
 </html>
-
-
 
 <script src="js/knockout.min.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -31,9 +27,13 @@
 var tc; //TourChamp
 var defThemes = [{name:1,points:2},{name:10,points:20}];
 set = function(field,val) { tc[field](val) };
-// show = function(sectionName) { 
-//   $('.section')
-// }
+var lastSection = null;
+show = function(sectionName) { 
+  if (lastSection == sectionName) return;
+  $('.section').hide();
+  $("."+sectionName).show();
+  lastSection = sectionName;
+}
 // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
 function vm() {
   tc = self = this;
@@ -59,7 +59,7 @@ function vm() {
   self.themes = ko.observable(defThemes)
   self.showThemes = function(themes) {
     self.title('Themes');
-    show('themes');
+    show('sectionThemes');
   }
 
   Sammy(function() {
