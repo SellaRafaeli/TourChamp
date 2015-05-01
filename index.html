@@ -82,8 +82,8 @@
                                 <div class="panel-body">
                                     <p data-bind='text: attributes.description'></p>
                                     <hr>
-                                    <p class='go' data-bind='click: $parent.submitChallenge, visible: !$data.done'>MARK AS DONE</p>
-                                    <p class='done' data-bind='visible: $data.done'>DONE!</p>
+                                    <p class='go' data-bind='click: $parent.submitChallenge, visible: !$data.completed()'>MARK AS DONE</p>
+                                    <p class='done' data-bind='visible: $data.completed()'>DONE!</p>
                                     <!-- <p data-bind='visible: done'>DONE</p> -->
                                     <hr>
                                 </div>
@@ -451,7 +451,7 @@ function vm() {
 
   self.submitChallenge = function(challenge) {    
     alert("submitting challenge id "+challenge.id+" (mock)");
-    challenge.done = true;
+    challenge.completed(true);
     }
 
   Sammy(function() {
@@ -469,6 +469,7 @@ function vm() {
             if (!self.user()) return this.redirect('/#');
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             getChallangesForTheme(this.params.theme_id, function(theme) {
+                theme.attributes.challenges.map(function(c) { c.completed = ko.observable(false); return c; }); 
                 self.showTheme(theme);
             })
         });
