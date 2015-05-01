@@ -23,7 +23,8 @@
                 });
             } else {
               tc.user(user.attributes);
-              redirect('/#city/Tel Aviv');
+              localStorage.setItem('user',JSON.stringify(tc.user()));
+              redirect('/#city/Tel-Aviv');
             }
           },
           error: function(user, error) {

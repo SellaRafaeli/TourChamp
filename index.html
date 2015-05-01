@@ -409,7 +409,8 @@ function vm() {
 
   //user  
   self.user = ko.observable(null); 
-  self.user({displayName: 'fake user'})
+  if (oldUser = localStorage.getItem('user')) self.user(JSON.parse(oldUser));
+  //self.user({displayName: 'fake user'})
 
   //city view
   self.city = ko.observable("Tel-Aviv");
