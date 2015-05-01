@@ -36,7 +36,9 @@
                 <li>&nbsp;</li>
             </ul> -->
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-heart-o fa-lg"></i></a></li>
+                <li>
+                    <a data-bind='text: (user() || {}).displayName'></a>    
+                </li>
             </ul>
         </div>
     </div>
@@ -348,6 +350,7 @@ show = function(sectionID) {
   $(sectionID).show();
   lastSection = sectionID;
 }
+redirect = function(route) { document.location.href = route; };
 // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
 function vm() {
   tc = self = this;
