@@ -3,11 +3,8 @@
 // For example:
 Parse.Cloud.define("mark_challenge_completed", function(request, response) {
 
+	//get user data
    var user = Parse.User.current();
 
-  //get user data
-  var response_str = ""
-  response_str +=  request.params.challenge_id
-  response_str.
-  response.success(response_str + console.log(user));
+  response.success("challangeid " + request.params.challenge_id + " user id is "  + console.log(user.id));
 });

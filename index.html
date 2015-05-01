@@ -559,6 +559,15 @@ function vm() {
 ko.applyBindings(new vm());
 set('foo','bar');
 
+    Parse.Cloud.run('mark_challenge_completed', { challenge_id: '123' }, {
+    success: function(response) {
+        alert(response)
+    
+  },
+  error: function(error) {
+  }
+});
+    
 </script>
   </body>
 </html>
