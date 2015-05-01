@@ -179,12 +179,10 @@
     <h1 class="text-center" data-bind='text: challenge_name'></h1>
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            <h3 class="text-center lato slideInUp animate" data-bind='text: challenge_subtitle'></h3>
+            <h3 class="text-center lato slideInUp animate" data-bind='text: challenge_location'></h3>
             <br>
             <div class="row">
-                <div class="col-xs-4 col-xs-offset-1" data-bind='text: challenge_desc'>Some brand-tacular designs even have home page content that is taller that 12,000 pixels. That's a lotta content.</div>
-                <div class="col-xs-2"></div>
-                <div class="col-xs-4 text-right">Anyhoo, this is just some random blurb of text, and Bootply.com is a playground and code editor for Bootstrap.</div>
+                <div class='col-xs-11 col-xs-offset-1' data-bind='text: challenge_desc'>Some brand-tacular designs even have home page content that is taller that 12,000 pixels. That's a lotta content.</div>
             </div>
             <br>
             <p class="text-center">
@@ -449,7 +447,7 @@ function vm() {
   self.challengeTitle = ko.observable("");
   self.challenge_name = ko.observable("");
   self.challenge_desc = ko.observable("bla");
-  self.challenge_subtitle = ko.observable("bla");
+  self.challenge_location = ko.observable("");
 
   self.showCity = function(themes) {
     self.title('Themes');
@@ -467,6 +465,7 @@ function vm() {
   self.showChallenge = function(challenge) {
     self.challengeTitle('Challenge info for '+challenge.id);
     self.challenge_name(challenge.attributes.name);
+    self.challenge_location(challenge.attributes.location);
     self.challenge_desc(challenge.attributes.description);
     show("#section3");
   }
