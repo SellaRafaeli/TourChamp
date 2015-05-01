@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Codeply">
 
-
-
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" rel="stylesheet" />
@@ -25,10 +23,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand text-danger" href="#">BRAND</a>
+            <a class="navbar-brand text-danger" href="#">TourChamp</a>
         </div>
         <div class="navbar-collapse collapse" id="navbar-collapsible">
-            <ul class="nav navbar-nav navbar-left">
+            <!-- <ul class="nav navbar-nav navbar-left">
                 <li><a href="#section1">Start</a></li>
                 <li><a href="#section2">Next</a></li>
                 <li><a href="#section3">Then</a></li>
@@ -36,7 +34,7 @@
                 <li><a href="#section5">More</a></li>
                 <li><a href="#section6">Last</a></li>
                 <li>&nbsp;</li>
-            </ul>
+            </ul> -->
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-heart-o fa-lg"></i></a></li>
             </ul>
@@ -46,20 +44,20 @@
 
 <section class="container-fluid" id="section1">
     <div class="v-center">
-        <h1 class="text-center">Just One Page</h1>
-        <h2 class="text-center lato animate slideInDown">Change It To Say <b>Something</b> Unique</h2>
+        <h1 class="text-center">TourChamp</h1>
+        <h2 class="text-center lato animate slideInDown">Win at <b>Traveling</b></h2>
         <p class="text-center">
             <br>
-            <a href="#" class="btn btn-danger btn-lg btn-huge lato" data-toggle="modal" data-target="#myModal">Get Free Membership</a>
+            <a href="#" class="btn btn-danger btn-lg btn-huge lato" data-toggle="modal" data-target="#myModal">Enter with Facebook</a>
         </p>
     </div>
-    <a href="#section2">
+        <!-- <a href="#section2">
 		<div class="scroll-down bounceInDown animated">
             <span>
                 <i class="fa fa-angle-down fa-2x"></i>
             </span>
 		</div>
-        </a>
+        </a> -->
 </section>
 
 <section class="container-fluid" id="section2">
@@ -271,67 +269,24 @@
 <section class="container-fluid" id="section5">
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <h2 class="text-center lato">Section with Marketing Highlights.</h2>
+            <h2 class="text-center lato">
+                Challenges near <span data-bind="text: city"></span>
+            </h2>
             <hr>
-            <div class="media">
-                <h3>Boom</h3>
-                <div class="media-left">
-                    <img src="//placehold.it/100">
+            <ul data-bind="foreach: themes">
+                <div class="media">
+                <h3>
+                   <a data-bind='text: name, attr: { href: "#theme/"+id }'></a>
+                </h3>
+                    <div class="media-left">
+                        <img src="//placehold.it/100">
+                    </div>
+                    <div class="media-body media-middle">
+                        <p data-bind='text: desc'></p>
+                    </div>
                 </div>
-                <div class="media-body media-middle">
-                    <p>Some brand-tacular designs even have home page content that is taller that 12,000 pixels. That's a lotta content Lorem ipsum dolor sit amet, adipiscing elit.</p>
-                </div>
-            </div>
-            <hr>
-            <div class="media">
-                <h3>Boom</h3>
-                <div class="media-body media-middle">
-                    <p>Offset right home page content that is taller that 12,000 pixels. That's a lotta content Lorem ipsum dolor sit amet, adipiscing elit.</p>
-                </div>
-                <div class="media-right">
-                    <img src="//placehold.it/100">
-                </div>
-            </div>
-            <hr>
-            <div class="media">
-                <h3>Boom</h3>
-                <div class="media-left">
-                    <img src="//placehold.it/100">
-                </div>
-                <div class="media-body media-middle">
-                    <p>Some brand-tacular designs even have home page content that is taller that 12,000 pixels. That's a lotta content Lorem ipsum dolor sit amet, adipiscing elit.</p>
-                </div>
-            </div>
-            <hr>
-            <div class="media">
-                <h3>Boom</h3>
-                <div class="media-body media-middle">
-                    <p>Offset right home page content that is taller that 12,000 pixels. That's a lotta content Lorem ipsum dolor sit amet, adipiscing elit.</p>
-                </div>
-                <div class="media-right">
-                    <img src="//placehold.it/100">
-                </div>
-            </div>
-            <hr>
-            <div class="media">
-                <h3>Boom</h3>
-                <div class="media-left">
-                    <img src="//placehold.it/100">
-                </div>
-                <div class="media-body media-middle">
-                    <p>Some brand-tacular designs even have home page content that is taller that 12,000 pixels. That's a lotta content Lorem ipsum dolor sit amet, adipiscing elit.</p>
-                </div>
-            </div>
-            <hr>
-            <div class="media">
-                <h3>Boom</h3>
-                <div class="media-body media-middle">
-                    <p>Offset right home page content that is taller that 12,000 pixels. That's a lotta content Lorem ipsum dolor sit amet, adipiscing elit.</p>
-                </div>
-                <div class="media-right">
-                    <img src="//placehold.it/100">
-                </div>
-            </div>
+                <hr>
+            </ul>            
 
         </div>
     </div>
@@ -371,89 +326,69 @@
         </div>
     </div>
 </section>
-
-<footer id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-3 column">
-                <h4>Information</h4>
-                <ul class="nav">
-                    <li><a href="about-us.html">Products</a></li>
-                    <li><a href="about-us.html">Services</a></li>
-                    <li><a href="about-us.html">Benefits</a></li>
-                    <li><a href="elements.html">Developers</a></li>
-                </ul>
-            </div>
-            <div class="col-xs-6 col-md-3 column">
-                <h4>Follow Us</h4>
-                <ul class="nav">
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Google+</a></li>
-                    <li><a href="#">Pinterest</a></li>
-                </ul>
-            </div>
-            <div class="col-xs-6 col-md-3 column">
-                <h4>Contact Us</h4>
-                <ul class="nav">
-                    <li><a href="#">Email</a></li>
-                    <li><a href="#">Headquarters</a></li>
-                    <li><a href="#">Management</a></li>
-                    <li><a href="#">Support</a></li>
-                </ul>
-            </div>
-            <div class="col-xs-6 col-md-3 column">
-                <h4>Customer Service</h4>
-                <ul class="nav">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Delivery Information</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms &amp; Conditions</a></li>
-                </ul>
-            </div>
-        </div>
-        <!--/row-->
-        <p class="text-right">©2015</p>
-    </div>
-</footer>
-
-<div class="scroll-up">
-	<a href="#"><i class="fa fa-angle-up"></i></a>
-</div>
-
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h2 class="text-center"><img src="//placehold.it/110" class="img-circle"><br>Login</h2>
-            </div>
-            <div class="modal-body row">
-                <h6 class="text-center">COMPLETE THESE FIELDS TO SIGN UP</h6>
-                <form class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
-                    <div class="form-group">
-                        <input type="text" class="form-control input-lg" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control input-lg" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-danger btn-lg btn-block">Sign In</button>
-                        <span class="pull-right"><a href="#">Register</a></span><span><a href="#">Need help?</a></span>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <h6 class="text-center"><a href="">Privacy is important to us. Click here to read why.</a></h6>
-            </div>
-        </div>
-    </div>
-</div>
     <!--scripts loaded here-->
     
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    
+        <script>
+            $('section').hide();
+            $('#section5').show();
+        </script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>    
     <script src="js/theme_js.js"></script>
+    <script src="js/knockout.min.js"></script>
+
+<script src="js/sammy.js"></script>
+<script>
+var tc; //TourChamp
+var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_123'},{name:"theme name 456",desc:'my desc 2',points:20,id:'theme_id_456'}];
+set = function(field,val) { tc[field](val) };
+var lastSection = null;
+show = function(sectionName) { 
+  if (lastSection == sectionName) return;
+  $('.section').hide();
+  $("."+sectionName).show();
+  lastSection = sectionName;
+}
+// This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
+function vm() {
+  tc = self = this;
+  self.firstName = "Bert";
+  self.lastName = "Bertington";
+  self.color = ko.observable("blue");
+  self.foo = ko.observable();
+
+  
+  self.city = ko.observable("Tel Aviv");
+  self.title = ko.observable("");
+  
+
+  self.themes = ko.observable(defThemes)
+  self.showThemes = function(themes) {
+    self.title('Themes');
+    show('sectionThemes');
+  }
+
+  Sammy(function() {
+        this.get('#city/:city', function() {
+            self.city(this.params.city);            
+            //$.get("/mail", { folder: this.params.folder }, self.showThemes);
+            self.showThemes(defThemes);
+        });
+
+        this.get('#challenge/:challengeName', function() {
+            self.city(this.params.city);            
+            //$.get("/mail", { folder: this.params.folder }, self.showThemes);
+            self.showThemes(defThemes);
+        });
+        //this.get('', function() { this.app.runRoute('get', '#Inbox') });
+  }).run(); 
+}
+
+// Activates knockout.js
+ko.applyBindings(new vm());
+set('foo','bar');
+
+</script>
   </body>
 </html>
