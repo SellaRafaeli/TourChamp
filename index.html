@@ -81,7 +81,10 @@
 
                                 <div class="panel-body">
                                     <p>There is other content and snippets of details or features that can be placed here..</p>
-                                    <hr>GO
+                                    <hr>
+                                    <p class='go' data-bind='visible: $data.done'>MARK AS DONE!</p>
+                                    <p class='done' data-bind='visible: !$data.done'>DONE</p>
+                                    <!-- <p data-bind='visible: done'>DONE</p> -->
                                     <hr>
                                 </div>
                             </div>
@@ -254,7 +257,7 @@
                 Challenges near <span data-bind="text: city"></span>
             </h2>
 
-            <select data-bind="visible: chooseCities, options: availableCities, selectedOptions: city,event:{ change: function(){} }" style='width:100%; font-size:50px'></select>
+            <select data-bind="visible: chooseCities, options: availableCities, selectedOptions: city,event:{ change: function(){ chooseCities(false);} }" style='width:100%; font-size:50px'></select>
             <p class='text-right' style='font-size=smaller'><a href='#' data-bind="click: function(){ chooseCities(!chooseCities()) }">elsewhere?</a></p>
             <hr>
             <ul data-bind="foreach: themes">
@@ -336,11 +339,11 @@ var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_12
     challenges: [
         {name: 'challenge1', id: 'challenge_id_1', subtitle: "my subtitle", desc: "challenge 1 desc - really cool challenge"},
         {name: 'challenge2', id: 'challenge_id_2'},
-        {name: 'challenge3', id: 'challenge_id_3'},
-        {name: 'challenge4', id: 'challenge_id_4'},
+        {name: 'challenge3', id: 'challenge_id_3', done: 'yes'},
+        {name: 'challenge4', id: 'challenge_id_4', done: 'yes'},
         {name: 'challenge5', id: 'challenge_id_5'},
         {name: 'challenge6', id: 'challenge_id_6'},
-        {name: 'challenge7', id: 'challenge_id_7'},
+        {name: 'challenge7', id: 'challenge_id_7', done: 'yes'},
         ]
 },
 
@@ -371,7 +374,7 @@ function vm() {
   self.title = ko.observable("");  
   self.themes = ko.observable(defThemes)
   self.chooseCities = ko.observable("");
-  self.availableCities = ko.observable(['Tel Aviv','Barcelona','Madrid','Berlin']);  
+  self.availableCities = ko.observable(['Tel-Aviv','Barcelona','Madrid','Berlin']);  
 
   //theme view
   self.themeTitle = ko.observable("");  

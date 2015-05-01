@@ -195,3 +195,6 @@ footer .nav>li>a:hover {
     background-color:transparent;
 	color:#fff;
 }
+
+.done { background-color: lightgreen;}
+.go { background-color: lightblue;}
