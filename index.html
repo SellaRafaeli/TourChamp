@@ -257,7 +257,7 @@
                 Badges to achieve near <span data-bind="text: city"></span>
             </h2>
 
-            <select data-bind="visible: chooseCities, options: availableCities, selectedOptions: city,event:{ change: function(){ chooseCities(false);} }" style='width:100%; font-size:50px'></select>
+            <select data-bind="visible: chooseCities, options: availableCities, selectedOptions: city,event:{ change: function(){ console.log(city); chooseCities(false);} }" style='width:100%; font-size:50px'></select>
             <p class='text-right' style='font-size=smaller'><a href='#' data-bind="click: function(){ chooseCities(!chooseCities()) }">elsewhere?</a></p>
             <hr>
             <ul data-bind="foreach: themes">
@@ -341,8 +341,6 @@ function getThemesForCity(city_name, callback) {
     query.equalTo("city", city_name);
     query.find({  
         success: function(results) { 
-            kaka = results;
-
             if (callback) {
                 callback(results);
             }
@@ -373,7 +371,6 @@ function getThemesForCity(city_name, callback) {
 // }
 
 var tc; //TourChamp
-var kaka;
 var defThemes = [{attributes: { name:"theme name 123", description:'my desc1',points:2 }, id:'theme_id_123',
     challenges: [
         {name: 'challenge1', id: 'challenge_id_1', subtitle: "my subtitle", desc: "challenge 1 desc - really cool challenge"},
