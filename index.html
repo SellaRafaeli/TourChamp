@@ -82,8 +82,8 @@
                                 <div class="panel-body">
                                     <p data-bind='text: attributes.description'></p>
                                     <hr>
-                                    <p class='go' data-bind='visible: $data.done'>MARK AS DONE!</p>
-                                    <p class='done' data-bind='visible: !$data.done'>DONE</p>
+                                    <p class='go' data-bind='click: $parent.submitChallenge, visible: !$data.done'>MARK AS DONE</p>
+                                    <p class='done' data-bind='visible: $data.done'>DONE!</p>
                                     <!-- <p data-bind='visible: done'>DONE</p> -->
                                     <hr>
                                 </div>
@@ -367,19 +367,28 @@ function getChallangesForTheme(themeId, callback) {
 }
 
 var tc; //TourChamp
-var defThemes = [{attributes: { name:"theme name 123", description:'my desc1',points:2 }, id:'theme_id_123',
-    challenges: [
-        {name: 'challenge1', id: 'challenge_id_1', subtitle: "my subtitle", desc: "challenge 1 desc - really cool challenge"},
-        {name: 'challenge2', id: 'challenge_id_2'},
+
+var defThemes = [
+{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_123',
+ attributes:{ description:'my desc 2',points:20, name:"theme name 456"}}, 
+
+{name:"theme name 456",desc:'my desc 2',points:20,id:'theme_id_456', attributes: {}}];
+
+var defChallenges = [
+        {name: 'challenge1', id: 'challenge_id_1', subtitle: "my subtitle", desc: "challenge 1 desc - really cool challenge", done: 'yes'},
+        {name: 'challenge2', id: 'challenge_id_2', bla: 'foo'},
+
         {name: 'challenge3', id: 'challenge_id_3', done: 'yes'},
         {name: 'challenge4', id: 'challenge_id_4', done: 'yes'},
         {name: 'challenge5', id: 'challenge_id_5'},
         {name: 'challenge6', id: 'challenge_id_6'},
         {name: 'challenge7', id: 'challenge_id_7', done: 'yes'},
-        ]
-},
+        ];
 
-{attributes:{ description:'my desc 2',points:20, name:"theme name 456"}, id:'theme_id_456'}];
+
+
+
+
 set = function(field,val) { tc[field](val) };
 var lastSection = null;
 show = function(sectionID) { 
@@ -390,6 +399,7 @@ show = function(sectionID) {
 }
 redirect = function(route) { document.location.href = route; };
 // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
+
 function vm() {
   tc = self = this;
   self.firstName = "Bert";
@@ -410,7 +420,7 @@ function vm() {
 
   //theme view
   self.themeTitle = ko.observable("");  
-  self.challenges = ko.observable("");  
+  self.challenges = ko.observableArray("");  
 
   //challenge view
   self.challengeTitle = ko.observable("");
@@ -426,7 +436,8 @@ function vm() {
 
   self.showTheme = function(theme) {
     self.themeTitle('Theme info for '+theme.id);
-    self.challenges(theme.attributes.challenges);
+
+    self.challenges((theme && theme.attributes && theme.attributes.challenges) || defChallenges;
     show("#section2");
   };
 
@@ -436,6 +447,11 @@ function vm() {
     self.challenge_desc(challenge.desc);
     show("#section3");
   }
+
+  self.submitChallenge = function(challenge) {    
+    alert("submitting challenge id "+challenge.id+" (mock)");
+    challenge.done = true;
+    }
 
   Sammy(function() {
         this.get('#city/:city', function() {
@@ -459,7 +475,7 @@ function vm() {
         this.get('#challenge/:challenge_id', function() {
             if (!self.user()) return this.redirect('/#');
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
-            self.showChallenge(defThemes[0].challenges[0]);
+            self.showChallenge(defChallenges[0]);
         });
 
         this.get('', function() { show("#section1")});

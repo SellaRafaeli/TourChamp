@@ -197,4 +197,5 @@ footer .nav>li>a:hover {
 }
 
 .done { background-color: lightgreen;}
-.go { background-color: lightblue;}
+.go { background-color: lightblue; 
+  cursor: pointer;}
