@@ -48,7 +48,7 @@
         <h2 class="text-center lato animate slideInDown">Win at <b>Traveling</b></h2>
         <p class="text-center">
             <br>
-            <a href="#" class="btn btn-danger btn-lg btn-huge lato" data-toggle="modal" data-target="#myModal">Enter with Facebook</a>
+            <a href="#" class="btn btn-danger btn-lg btn-huge lato" data-toggle="modal" data-target="#myModal" data-bind='click: fb_login'>Enter with Facebook</a>
         </p>
     </div>
         <!-- <a href="#section2">
@@ -318,7 +318,13 @@
     <script src="js/theme_js.js"></script>
     <script src="js/knockout.min.js"></script>
 
-<script src="js/sammy.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+    <script>
+    Parse.initialize("mWYkCl2OixqTNVogAN8QwSWJvz7R0ll7hWYyJs3P", "YBIy6ufbozlkSeGbbVzTQUOBUF20IhmYuGuPQjFx");
+    </script>
+
+    <script src="js/sammy.js"></script>
+    <script src="js/fb_login.js"></script>
 <script>
 var tc; //TourChamp
 var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_123',
@@ -349,6 +355,9 @@ function vm() {
   self.lastName = "Bertington";
   self.color = ko.observable("blue");
   self.foo = ko.observable();
+
+  //user
+  self.user = ko.observable(null); 
 
   //city view
   self.city = ko.observable("Tel Aviv");
@@ -385,17 +394,20 @@ function vm() {
 
   Sammy(function() {
         this.get('#city/:city', function() {
+            if (!self.user()) return this.redirect('/#');
             self.city(this.params.city);            
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             self.showCity(defThemes);
         });
 
         this.get('#theme/:theme_id', function() {  
+            if (!self.user()) return this.redirect('/#');
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             self.showTheme(defThemes[0]);
         });
 
         this.get('#challenge/:challenge_id', function() {
+            if (!self.user()) return this.redirect('/#');
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             self.showChallenge(defThemes[0].challenges[0]);
         });
@@ -403,7 +415,6 @@ function vm() {
         this.get('', function() { show("#section1")});
   }).run(); 
 }
-
 // Activates knockout.js
 ko.applyBindings(new vm());
 set('foo','bar');
