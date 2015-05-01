@@ -62,9 +62,9 @@
         </a> -->
 </section>
 <!-- HERE1 -->
-<section class="container-fluid" id="section2">
+<section class="container-fluid" id="section2" style='margin-top: 10px'>
     <div class="container v-center">
-        <h2 class="text-center lato">
+        <h2 class="text-center lato" style='padding-bottom: 40px'>
                 <span data-bind="text: themeTitle"></span>
         </h2>
         <div class="row">
@@ -82,8 +82,8 @@
                                 <div class="panel-body">
                                     <p data-bind='text: attributes.description'></p>
                                     <hr>
-                                    <p class='go' data-bind='click: $parent.submitChallenge, visible: !$data.completed()'>MARK AS DONE</p>
-                                    <p class='done' data-bind='visible: $data.completed()'>DONE!</p>
+                                    <p class='btn btn-success' data-bind='click: $parent.submitChallenge, visible: !$data.completed()'>MARK AS DONE (<span data-bind='text: attributes.points'></span> points)</p>
+                                    <p class='btn btn-success' disabled="disabled" data-bind='visible: $data.completed()'>DONE!</p>
                                     <!-- <p data-bind='visible: done'>DONE</p> -->
                                     <hr>
                                 </div>
@@ -436,7 +436,7 @@ function vm() {
   };
 
   self.showTheme = function(theme) {
-    self.themeTitle('Theme info for '+theme.id);
+    self.themeTitle('"'+theme.attributes.name+'" Badge');
 
     self.challenges((theme && theme.attributes && theme.attributes.challenges) || defChallenges);
     show("#section2");
