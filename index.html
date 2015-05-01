@@ -72,7 +72,11 @@
                         <div class="col-sm-12 text-center">
                             <div class="panel panel-default slideInLeft animate">
                                 <div class="panel-heading">
-                                <h3 data-bind='text: name'></h3></div>
+                                    <h3>
+                                        <a data-bind='text: name, attr: { href: "#challenge/"+id }'></a>
+                                    </h3>
+                                </div>
+
                                 <div class="panel-body">
                                     <p>There is other content and snippets of details or features that can be placed here..</p>
                                     <hr>GO
@@ -167,13 +171,13 @@
 </section>
 
 <section class="container-fluid" id="section3">
-    <h1 class="text-center">A Bootstrap Foundation</h1>
+    <h1 class="text-center" data-bind='text: challenge_name'></h1>
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            <h3 class="text-center lato slideInUp animate">That <strong>Doesn't</strong> Have to Look Like Bootstrap.</h3>
+            <h3 class="text-center lato slideInUp animate" data-bind='text: challenge_subtitle'></h3>
             <br>
             <div class="row">
-                <div class="col-xs-4 col-xs-offset-1">Some brand-tacular designs even have home page content that is taller that 12,000 pixels. That's a lotta content.</div>
+                <div class="col-xs-4 col-xs-offset-1" data-bind='text: challenge_desc'>Some brand-tacular designs even have home page content that is taller that 12,000 pixels. That's a lotta content.</div>
                 <div class="col-xs-2"></div>
                 <div class="col-xs-4 text-right">Anyhoo, this is just some random blurb of text, and Bootply.com is a playground and code editor for Bootstrap.</div>
             </div>
@@ -319,7 +323,7 @@
 var tc; //TourChamp
 var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_123',
     challenges: [
-        {name: 'challenge1', id: 'challenge_id_1'},
+        {name: 'challenge1', id: 'challenge_id_1', subtitle: "my subtitle", desc: "challenge 1 desc - really cool challenge"},
         {name: 'challenge2', id: 'challenge_id_2'},
         {name: 'challenge3', id: 'challenge_id_3'},
         {name: 'challenge4', id: 'challenge_id_4'},
@@ -355,15 +359,28 @@ function vm() {
   self.themeTitle = ko.observable("");  
   self.challenges = ko.observable("");  
 
+  //challenge view
+  self.challengeTitle = ko.observable("");
+  self.challenge_name = ko.observable("");
+  self.challenge_desc = ko.observable("bla");
+  self.challenge_subtitle = ko.observable("bla");
+
   self.showCity = function(themes) {
     self.title('Themes');
     show('#section5');
-  }
+  };
 
   self.showTheme = function(theme) {
     self.themeTitle('Theme info for '+theme.id);
-    self.challenges = theme.challenges;
+    self.challenges(theme.challenges);
     show("#section2");
+  };
+
+  self.showChallenge = function(challenge) {
+    self.challengeTitle('Challenge info for '+challenge.id);
+    self.challenge_name(challenge.name);
+    self.challenge_desc(challenge.desc);
+    show("#section3");
   }
 
   Sammy(function() {
@@ -373,11 +390,16 @@ function vm() {
             self.showCity(defThemes);
         });
 
-        this.get('#theme/:theme_id', function() {
-            //self.theme(this.params.theme_id);            
+        this.get('#theme/:theme_id', function() {  
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             self.showTheme(defThemes[0]);
         });
+
+        this.get('#challenge/:challenge_id', function() {
+            //$.get("/mail", { folder: this.params.folder }, self.showThemes);
+            self.showChallenge(defThemes[0].challenges[0]);
+        });
+
         this.get('', function() { show("#section1")});
   }).run(); 
 }
