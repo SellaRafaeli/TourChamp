@@ -254,7 +254,7 @@
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <h2 class="text-center lato">
-                Challenges near <span data-bind="text: city"></span>
+                Badges to achieve near <span data-bind="text: city"></span>
             </h2>
 
             <select data-bind="visible: chooseCities, options: availableCities, selectedOptions: city,event:{ change: function(){ chooseCities(false);} }" style='width:100%; font-size:50px'></select>
@@ -263,13 +263,13 @@
             <ul data-bind="foreach: themes">
                 <div class="media">
                 <h3>
-                   <a data-bind='text: name, attr: { href: "#theme/"+id }'></a>
+                   <a data-bind='text: attributes.badge, attr: { href: "#theme/"+id }'></a>
                 </h3>
                     <div class="media-left">
                         <img src="//placehold.it/100">
                     </div>
                     <div class="media-body media-middle">
-                        <p data-bind='text: desc'></p>
+                        <p data-bind='text: attributes.description'></p>
                     </div>
                 </div>
                 <hr>
@@ -334,8 +334,47 @@
     <script src="js/sammy.js"></script>
     <script src="js/fb_login.js"></script>
 <script>
+
+function getThemesForCity(city_name, callback) {
+    var Theme = Parse.Object.extend("Theme");
+    var query = new Parse.Query(Theme);
+    query.equalTo("city", city_name);
+    query.find({  
+        success: function(results) { 
+            kaka = results;
+
+            if (callback) {
+                callback(results);
+            }
+        },  
+        error: function(error) {  
+            console.log(error); 
+        } 
+    });    
+}
+
+// function getChallangesForTheme(theme_name, callback) {
+//     var Theme = Parse.Object.extend("Theme");
+//     var query = new Parse.Query(Theme);
+//     query.equalTo("city", "Tel Aviv");
+//     query.find({  
+//         success: function(results) { 
+//             console.log('kaka'); 
+//             console.log(results);  
+//             if (callback) {
+//                 callback(results);
+//             }
+//         },  
+//         error: function(error) {  
+//             console.log('error'); 
+//             console.log(error); 
+//         } 
+//     });    
+// }
+
 var tc; //TourChamp
-var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_123',
+var kaka;
+var defThemes = [{attributes: { name:"theme name 123", description:'my desc1',points:2 }, id:'theme_id_123',
     challenges: [
         {name: 'challenge1', id: 'challenge_id_1', subtitle: "my subtitle", desc: "challenge 1 desc - really cool challenge"},
         {name: 'challenge2', id: 'challenge_id_2'},
@@ -347,7 +386,7 @@ var defThemes = [{name:"theme name 123",desc:'my desc1',points:2,id:'theme_id_12
         ]
 },
 
-{name:"theme name 456",desc:'my desc 2',points:20,id:'theme_id_456'}];
+{attributes:{ description:'my desc 2',points:20, name:"theme name 456"}, id:'theme_id_456'}];
 set = function(field,val) { tc[field](val) };
 var lastSection = null;
 show = function(sectionID) { 
@@ -370,7 +409,7 @@ function vm() {
   self.user({displayName: 'fake user'})
 
   //city view
-  self.city = ko.observable("Tel Aviv");
+  self.city = ko.observable("Tel-Aviv");
   self.title = ko.observable("");  
   self.themes = ko.observable(defThemes)
   self.chooseCities = ko.observable("");
@@ -388,6 +427,7 @@ function vm() {
 
   self.showCity = function(themes) {
     self.title('Themes');
+    self.themes(themes);
     show('#section5');
   };
 
@@ -409,7 +449,10 @@ function vm() {
             if (!self.user()) return this.redirect('/#');
             self.city(this.params.city);            
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
-            self.showCity(defThemes);
+
+            getThemesForCity(this.params.city, function(themes) {
+                self.showCity(themes);
+            });
         });
 
         this.get('#theme/:theme_id', function() {  
