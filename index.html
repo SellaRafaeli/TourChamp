@@ -351,7 +351,7 @@ function getThemesForCity(city_name, callback) {
     });    
 }
 
-function getChallangesForTheme(themeId, callback) {
+function getChallengesForTheme(themeId, callback) {
     var query = new Parse.Query("Theme");
     query.include("challenges");
     query.get( themeId, {  
@@ -365,6 +365,23 @@ function getChallangesForTheme(themeId, callback) {
         } 
     });    
 }
+
+function getChallengeById(challengeId, callback) {
+    var query = new Parse.Query("Challenge");
+    query.get( challengeId, {  
+        success: function(result) { 
+            console.log(result);
+            if (callback) {
+                callback(result);
+            }
+        },  
+        error: function(error) {  
+            console.log(error); 
+        } 
+    });    
+}
+
+
 
 var tc; //TourChamp
 
@@ -444,8 +461,8 @@ function vm() {
 
   self.showChallenge = function(challenge) {
     self.challengeTitle('Challenge info for '+challenge.id);
-    self.challenge_name(challenge.name);
-    self.challenge_desc(challenge.desc);
+    self.challenge_name(challenge.attributes.name);
+    self.challenge_desc(challenge.attributes.description);
     show("#section3");
   }
 
@@ -468,7 +485,7 @@ function vm() {
         this.get('#theme/:theme_id', function() {  
             if (!self.user()) return this.redirect('/#');
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
-            getChallangesForTheme(this.params.theme_id, function(theme) {
+            getChallengesForTheme(this.params.theme_id, function(theme) {
                 theme.attributes.challenges.map(function(c) { c.completed = ko.observable(false); return c; }); 
                 self.showTheme(theme);
             })
@@ -477,7 +494,9 @@ function vm() {
         this.get('#challenge/:challenge_id', function() {
             if (!self.user()) return this.redirect('/#');
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
-            self.showChallenge(defChallenges[0]);
+            getChallengeById(this.params.challenge_id, function(challenge) {
+                self.showChallenge(challenge);
+            });
         });
 
         this.get('', function() { 
