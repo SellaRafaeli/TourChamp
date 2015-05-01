@@ -351,24 +351,20 @@ function getThemesForCity(city_name, callback) {
     });    
 }
 
-// function getChallangesForTheme(theme_name, callback) {
-//     var Theme = Parse.Object.extend("Theme");
-//     var query = new Parse.Query(Theme);
-//     query.equalTo("city", "Tel Aviv");
-//     query.find({  
-//         success: function(results) { 
-//             console.log('kaka'); 
-//             console.log(results);  
-//             if (callback) {
-//                 callback(results);
-//             }
-//         },  
-//         error: function(error) {  
-//             console.log('error'); 
-//             console.log(error); 
-//         } 
-//     });    
-// }
+function getChallangesForTheme(themeId, callback) {
+    var query = new Parse.Query("Theme");
+    query.include("challenges");
+    query.get( themeId, {  
+        success: function(results) { 
+            if (callback) {
+                callback(results);
+            }
+        },  
+        error: function(error) {  
+            console.log(error); 
+        } 
+    });    
+}
 
 var tc; //TourChamp
 var defThemes = [{attributes: { name:"theme name 123", description:'my desc1',points:2 }, id:'theme_id_123',
