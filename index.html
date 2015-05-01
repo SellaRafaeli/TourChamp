@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Section scroller one-page template</title>
+    <title>TourChamp: Win At Traveling</title>
     <meta name="description" content="This one page example has a fixed navbar and full page height sections. Each section is vertically centered on larger screens, and then stack responsively on smaller screens. Scrollspy is used to activate the current menu item. This layout also has a contact form example. Uses animate.css, FontAwesome, Google Fonts (Lato and Bitter) and Bootstrap." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Codeply">
@@ -253,6 +253,9 @@
             <h2 class="text-center lato">
                 Challenges near <span data-bind="text: city"></span>
             </h2>
+
+            <select data-bind="visible: chooseCities, options: availableCities, selectedOptions: city,event:{ change: function(){} }" style='width:100%; font-size:50px'></select>
+            <p class='text-right' style='font-size=smaller'><a href='#' data-bind="click: function(){ chooseCities(!chooseCities()) }">elsewhere?</a></p>
             <hr>
             <ul data-bind="foreach: themes">
                 <div class="media">
@@ -359,14 +362,17 @@ function vm() {
   self.color = ko.observable("blue");
   self.foo = ko.observable();
 
-  //user
+  //user  
   self.user = ko.observable(null); 
+  self.user({displayName: 'fake user'})
 
   //city view
   self.city = ko.observable("Tel Aviv");
   self.title = ko.observable("");  
   self.themes = ko.observable(defThemes)
-  
+  self.chooseCities = ko.observable("");
+  self.availableCities = ko.observable(['Tel Aviv','Barcelona','Madrid','Berlin']);  
+
   //theme view
   self.themeTitle = ko.observable("");  
   self.challenges = ko.observable("");  
