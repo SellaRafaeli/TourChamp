@@ -480,7 +480,13 @@ function vm() {
             self.showChallenge(defChallenges[0]);
         });
 
-        this.get('', function() { show("#section1")});
+        this.get('', function() { 
+            if (tc.user()) {
+                redirect('/#city/Tel-Aviv');
+                return;
+            }
+            show("#section1");
+        });
   }).run(); 
 }
 // Activates knockout.js
