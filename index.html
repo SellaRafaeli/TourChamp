@@ -37,7 +37,7 @@
             </ul> -->
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a data-bind='text: (user() || {}).displayName'></a>    
+                    <a data-bind='text: (user() || {}).displayName, attr: { href: "#user/"+(user() ||{}).username }'></a>
                 </li>
             </ul>
         </div>
@@ -257,7 +257,12 @@
                 Badges to achieve near <span data-bind="text: city"></span>
             </h2>
 
-            <select data-bind="visible: chooseCities, options: availableCities, selectedOptions: city,event:{ change: function(){ console.log(city); chooseCities(false);} }" style='width:100%; font-size:50px'></select>
+            <select class='form-control' data-bind="visible: chooseCities, 
+            options: availableCities, 
+            optionsCaption: 'Select...',
+            selectedOptions: city,event:{ change: function(){ redirect('#city/'+$data.city()[0]); chooseCities(false);} }" style='width:100%;'>
+                <option selected disabled>Choose here</option>
+            </select>
             <p class='text-right' style='font-size=smaller'><a href='#' data-bind="click: function(){ chooseCities(!chooseCities()) }">elsewhere?</a></p>
             <hr>
             <ul data-bind="foreach: themes">
@@ -430,7 +435,7 @@ function vm() {
   //self.user({displayName: 'fake user'})
 
   //city view
-  self.city = ko.observable("Tel-Aviv");
+  self.city = ko.observable("");
   self.title = ko.observable("");  
   self.themes = ko.observable(defThemes)
   self.chooseCities = ko.observable("");
@@ -466,10 +471,16 @@ function vm() {
     show("#section3");
   }
 
+  self.showUserPage = function(userID) {
+    alert('not done yet - for userID '+userID);
+  }
+
   self.submitChallenge = function(challenge) {    
     alert("submitting challenge id "+challenge.id+" (mock)");
     challenge.completed(true);
-    }
+  }
+
+
 
   Sammy(function() {
         this.get('#city/:city', function() {
@@ -484,7 +495,6 @@ function vm() {
 
         this.get('#theme/:theme_id', function() {  
             if (!self.user()) return this.redirect('/#');
-            //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             getChallengesForTheme(this.params.theme_id, function(theme) {
                 theme.attributes.challenges.map(function(c) { c.completed = ko.observable(false); return c; }); 
                 self.showTheme(theme);
@@ -497,6 +507,12 @@ function vm() {
             getChallengeById(this.params.challenge_id, function(challenge) {
                 self.showChallenge(challenge);
             });
+        });
+
+        this.get('#user/:username', function() {
+            //$.get("/mail", { folder: this.params.folder }, self.showThemes);
+            debugger
+            self.showUserPage(this.params.username);
         });
 
         this.get('', function() { 
