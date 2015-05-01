@@ -61,7 +61,7 @@
 		</div>
         </a> -->
 </section>
-
+<!-- HERE1 -->
 <section class="container-fluid" id="section2">
     <div class="container v-center">
         <h2 class="text-center lato">
@@ -75,12 +75,12 @@
                             <div class="panel panel-default slideInLeft animate">
                                 <div class="panel-heading">
                                     <h3>
-                                        <a data-bind='text: name, attr: { href: "#challenge/"+id }'></a>
+                                        <a data-bind='text: attributes.name, attr: { href: "#challenge/"+id }'></a>
                                     </h3>
                                 </div>
 
                                 <div class="panel-body">
-                                    <p>There is other content and snippets of details or features that can be placed here..</p>
+                                    <p data-bind='text: attributes.description'></p>
                                     <hr>
                                     <p class='go' data-bind='visible: $data.done'>MARK AS DONE!</p>
                                     <p class='done' data-bind='visible: !$data.done'>DONE</p>
@@ -355,9 +355,9 @@ function getChallangesForTheme(themeId, callback) {
     var query = new Parse.Query("Theme");
     query.include("challenges");
     query.get( themeId, {  
-        success: function(results) { 
+        success: function(result) { 
             if (callback) {
-                callback(results);
+                callback(result);
             }
         },  
         error: function(error) {  
@@ -426,7 +426,7 @@ function vm() {
 
   self.showTheme = function(theme) {
     self.themeTitle('Theme info for '+theme.id);
-    self.challenges(theme.challenges);
+    self.challenges(theme.attributes.challenges);
     show("#section2");
   };
 
@@ -451,7 +451,9 @@ function vm() {
         this.get('#theme/:theme_id', function() {  
             if (!self.user()) return this.redirect('/#');
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
-            self.showTheme(defThemes[0]);
+            getChallangesForTheme(this.params.theme_id, function(theme) {
+                self.showTheme(theme);
+            })
         });
 
         this.get('#challenge/:challenge_id', function() {
