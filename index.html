@@ -67,7 +67,7 @@
 		</div>
         </a> -->
 </section>
-<!-- HERE1 -->
+
 <section class="container-fluid" id="section2" style='margin-top: 10px'>
     <div class="container v-center">
         <h2 class="text-center lato" style='padding-bottom: 40px'>
@@ -197,6 +197,50 @@
         </div>
     </div>
 </section>
+<!-- HERE1 -->
+<section class="container-fluid" id="section8">
+    <h1 class="text-center" data-bind='text: user().displayName'></h1>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <h2 class="text-center" data-bind='text: "Points: "+user().points'></h1>
+            <hr>
+            <h2 class="text-center lato slideInUp animate">Badges received:</h2>
+            <ul data-bind="foreach: badges_received">
+                    <div class="media-left">
+                        <img data-bind='attr: { src: $data.img || tc.randomImageSrc() }'>
+                    </div>
+                <div class="media-body media-middle">
+                <a data-bind='text: name, attr: { href: "#theme/"+id }'></a>
+                </div>
+                <br>
+            </ul>            
+            <hr>
+            <h2 class="text-center lato slideInUp animate">Challenges completed:</h2>
+            <br>
+            <ul data-bind="foreach: challenges_completed">
+                <div class="media-left">
+                    <img data-bind='attr: { src: $data.img || tc.randomImageSrc() }'>
+                </div>
+                <div class="media-body media-middle">
+                <a data-bind='text: name, attr: { href: "#challenge/"+id }'></a>
+                </div>
+                <br>
+            </ul>            
+
+
+<!--             <div class="row">
+                <div class='col-xs-11 col-xs-offset-1' data-bind='text: challenge_desc'></div>
+            </div>
+            <br>
+            <p class="text-center">
+                <img data-bind='attr: { src: $data.img || tc.randomImageSrc(400,400) }' class="img-responsive thumbnail center-block ">
+            </p>
+        </div>
+ -->        
+
+    </div>
+</section>
+
 
 <section id="section4">
     <div class="container v-center">
@@ -411,7 +455,10 @@ var defChallenges = [
         {name: 'challenge7', id: 'challenge_id_7', done: 'yes'},
         ];
 
-
+var defBadges = [
+    {id:'theme_id_123', name: 'Badge1'},
+    {id:'theme_id_345', name: 'Badge2'}
+];
 
 
 
@@ -452,12 +499,14 @@ function vm() {
 
   //theme view
   self.themeTitle = ko.observable("");  
-  self.challenges = ko.observableArray("");  
+  self.challenges = ko.observableArray("");
+  self.challenges_completed = ko.observableArray("");
+  self.badges_received = ko.observableArray("");
 
   //challenge view
   self.challengeTitle = ko.observable("");
   self.challenge_name = ko.observable("");
-  self.challenge_desc = ko.observable("bla");
+  self.challenge_desc = ko.observable("");
   self.challenge_location = ko.observable("");
 
   self.showCity = function(themes) {
@@ -482,7 +531,21 @@ function vm() {
   }
 
   self.showUserPage = function(userID) {
-    alert('not done yet - for userID '+userID);
+    self.title('Themes');
+    // console.log(tc.user().challenges_completed);
+    self.challenges_completed(defChallenges);
+    self.badges_received(defBadges);
+
+    // getChallengeById(this.params.challenge_id, function(challenge) {
+    //     self.challenges(userChallenges);
+    //     self.showChallenge(challenge);
+    // });
+
+
+//    self.themes(themes);
+    show("#section8");
+
+//    alert('not done yet - for userID '+userID);
   }
 
   self.submitChallenge = function(challenge) {    
