@@ -189,7 +189,7 @@
             </div>
             <br>
             <p class="text-center">
-                <img src="//placehold.it/444x222/444/FFF" class="img-responsive thumbnail center-block ">
+                <img data-bind='attr: { src: $data.img || tc.randomImageSrc(400,400) }' class="img-responsive thumbnail center-block ">
             </p>
         </div>
     </div>
@@ -272,7 +272,7 @@
                    <a data-bind='text: attributes.badge, attr: { href: "#theme/"+id }'></a>
                 </h3>
                     <div class="media-left">
-                        <img src="//placehold.it/100">
+                        <img data-bind='attr: { src: $data.img || tc.randomImageSrc() }'>
                     </div>
                     <div class="media-body media-middle">
                         <p data-bind='text: attributes.description'></p>
@@ -429,6 +429,11 @@ function vm() {
   self.lastName = "Bertington";
   self.color = ko.observable("blue");
   self.foo = ko.observable();
+  self.randomImageSrc = function(x,y) {
+    x = x || 100
+    y = y || 100
+    return "http://lorempixel.com/"+x+"/"+y+"/?rnd="+Math.random();
+  }
 
   //user  
   self.user = ko.observable(null); 
