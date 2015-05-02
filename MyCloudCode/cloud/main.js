@@ -1,10 +1,22 @@
+var challenges_helper = require('cloud/challenges_helper.js');
 
-// Use Parse.Cloud.define to define as many cloud functions as you want.
-// For example:
+
 Parse.Cloud.define("mark_challenge_completed", function(request, response) {
 
-	//get user data
-   var user = Parse.User.current();
+   var user = Parse.User.current(),
+   challenge_id = request.params.challenge_id ,
+   challenges_completed = user.attributes.challenges_completed || {}
+   already_completed = challenges_helper.is_already_completed(challenges_completed, challenge_id);
+   
+   if (already_completed){
+   		res = "already completed chanllenge id " + challenge_id + " for user_id "  + user.id
+   		console.log(res);
+   }{
+   		res = "marking completed " + challenge_id + " for user_id "  + user.id
+   	   challenges_helper.mark_challenge_completed(user, challenge_id)
+   }
 
-  response.success("challangeid " + request.params.challenge_id + " user id is "  + console.log(user.id));
+   response.success(res);
 });
+
+
