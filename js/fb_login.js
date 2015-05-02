@@ -30,7 +30,8 @@ function reloadUserData(){
                     user.set("displayName", me.name);
                     user.set("email", me.email);
                     user.save();
-                    //console.log("/me response", me);
+                    setUser(user);              
+                    redirect('/#city/Tel-Aviv');
                 });
             } else {
               setUser(user);              

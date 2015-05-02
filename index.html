@@ -37,7 +37,10 @@
             </ul> -->            
             <ul class="nav navbar-nav navbar-right" data-bind='if: user && user()'>
                 <li>
-                    <a data-bind='text: user().displayName+" ("+user().points+")", attr: { href: encodeURI("#user/"+user().username) }'></a>
+                    <img style='border-radius:100px' data-bind='attr: {src : tc.user().avatar_url }'/>
+                </li>            
+                <li data-bind='if: user().points && user().points > 0'>
+                    <a data-bind='text: user().displayName+" ("+(user().points || 0)+")", attr: { href: encodeURI("#user/"+user().username) }'></a>
                 </li>
                 <li>
                     <a href='"#logout'>Logout</a>
