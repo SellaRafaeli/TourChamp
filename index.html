@@ -517,8 +517,9 @@ function vm() {
             if (!self.user()) return this.redirect('/#');
             getChallengesForTheme(this.params.theme_id, function(theme) {
                 theme.attributes.challenges.map(function(c) { 
-                    var hasCompletedThisChallenge = !!tc.user().challenges_completed[c.id];
+                    var hasCompletedThisChallenge = !!(tc.user().challenges_completed || {})[c.id];
                     c.completed = ko.observable(hasCompletedThisChallenge); 
+
                     return c; 
                 }); 
                 self.showTheme(theme);
