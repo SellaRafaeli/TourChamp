@@ -203,3 +203,6 @@ footer .nav>li>a:hover {
 .done { background-color: lightgreen;}
 .go { background-color: lightblue; 
   cursor: pointer;}
+.theme_img {
+  max-width: 125px; 
+}
