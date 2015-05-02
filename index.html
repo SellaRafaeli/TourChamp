@@ -34,10 +34,13 @@
                 <li><a href="#section5">More</a></li>
                 <li><a href="#section6">Last</a></li>
                 <li>&nbsp;</li>
-            </ul> -->
-            <ul class="nav navbar-nav navbar-right">
+            </ul> -->            
+            <ul class="nav navbar-nav navbar-right" data-bind='if: user && user()'>
                 <li>
-                    <a data-bind='text: (user() || {}).displayName, attr: { href: "#user/"+(user() ||{}).username }'></a>
+                    <a data-bind='text: user().displayName+" ("+user().points+")", attr: { href: encodeURI("#user/"+user().username) }'></a>
+                </li>
+                <li>
+                    <a href='"#logout'>Logout</a>
                 </li>
             </ul>
         </div>
@@ -83,7 +86,7 @@
                                     <p data-bind='text: attributes.description'></p>
                                     <hr>
                                     <p class='btn btn-success' data-bind='click: $parent.submitChallenge, visible: !$data.completed()'>MARK AS DONE (<span data-bind='text: attributes.points'></span> points)</p>
-                                    <p class='btn btn-success' disabled="disabled" data-bind='visible: $data.completed()'>DONE!</p>
+                                    <p class='btn btn-info' disabled="disabled" data-bind='visible: $data.completed()'>DONE! (<span data-bind='text: attributes.points'></span> points)</p>
                                     <!-- <p data-bind='visible: done'>DONE</p> -->
                                     <hr>
                                 </div>
@@ -475,8 +478,18 @@ function vm() {
   }
 
   self.submitChallenge = function(challenge) {    
-    alert("submitting challenge id "+challenge.id+" (mock)");
-    challenge.completed(true);
+    function updateCompleted(id) {
+        challenge.completed(true);
+        reloadUserData(); //update points and stuff
+    }
+    Parse.Cloud.run('mark_challenge_completed', { challenge_id: challenge.id }, {
+        success: function(response) {
+            updateCompleted(challenge.id);
+        },
+      error: function(error) { 
+            updateCompleted(challenge.id);
+        }
+    });
   }
 
 
@@ -495,7 +508,11 @@ function vm() {
         this.get('#theme/:theme_id', function() {  
             if (!self.user()) return this.redirect('/#');
             getChallengesForTheme(this.params.theme_id, function(theme) {
-                theme.attributes.challenges.map(function(c) { c.completed = ko.observable(false); return c; }); 
+                theme.attributes.challenges.map(function(c) { 
+                    var hasCompletedThisChallenge = !!tc.user().challenges_completed[c.id];
+                    c.completed = ko.observable(hasCompletedThisChallenge); 
+                    return c; 
+                }); 
                 self.showTheme(theme);
             })
         });
@@ -508,9 +525,16 @@ function vm() {
             });
         });
 
+        this.get('#logout', function() {
+            //$.get("/mail", { folder: this.params.folder }, self.showThemes);
+            tc.user(null);
+            localStorage.removeItem('user');
+            redirect('/#');
+            //self.showUserPage(this.params.username);
+        });
+
         this.get('#user/:username', function() {
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
-            debugger
             self.showUserPage(this.params.username);
         });
 
@@ -530,3 +554,5 @@ set('foo','bar');
 </script>
   </body>
 </html>
+
+

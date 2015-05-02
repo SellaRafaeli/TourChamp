@@ -8,6 +8,17 @@
       version    : 'v2.2' // point to the latest Facebook Graph API version
     });    
   };
+
+function setUser(user){
+  tc.user(user.attributes);
+  localStorage.setItem('user',JSON.stringify(tc.user()));              
+}
+
+function reloadUserData(){
+  //tc.user(Parse.User.current().fetch().attributes);
+  Parse.User.current().fetch({success: function(user) { setUser(user)}})
+}
+  
  
   function fb_login() {
     Parse.FacebookUtils.logIn("public_profile,email", {
@@ -22,8 +33,7 @@
                     //console.log("/me response", me);
                 });
             } else {
-              tc.user(user.attributes);
-              localStorage.setItem('user',JSON.stringify(tc.user()));
+              setUser(user);              
               redirect('/#city/Tel-Aviv');
             }
           },
