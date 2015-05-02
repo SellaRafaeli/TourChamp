@@ -222,7 +222,7 @@
                     <img data-bind='attr: { src: $data.img || tc.randomImageSrc() }'>
                 </div>
                 <div class="media-body media-middle">
-                <a data-bind='text: name, attr: { href: "#challenge/"+id }'></a>
+                <a data-bind='text: attributes.name, attr: { href: "#challenge/"+id }'></a>
                 </div>
                 <br>
             </ul>            
@@ -435,7 +435,43 @@ function getChallengeById(challengeId, callback) {
     });    
 }
 
+function getAllChallenges(callback) {
+    var query = new Parse.Query("Challenge");
+    if (tc.allChallenges) {
+        callback(tc.allChallenges);
+    } else {
+        query.find({
+            success: function(results) { 
+                var challengeHash = {}
+                for (var i = 0; i < results.length; i++) {
+                    challengeHash[results[i].id] = results[i]
+                }
 
+                tc.allChallenges = challengeHash;
+                callback(challengeHash);
+            },  
+            error: function(error) {  
+                console.log(error); 
+            } 
+        });
+    }
+}
+
+function getChallengeByIds(challengeIds, callback) {
+    getAllChallenges(function(allChallenges) {
+        var challenges = [];
+        for (var i = 0; i < challengeIds.length; i++) {
+            challenges.push(allChallenges[challengeIds[i]]);
+        }
+
+        callback(challenges);
+    })
+}
+
+function getUserChallenges(user, callback) {
+    var challenge_ids = Object.keys(user.challenges_completed);
+    getChallengeByIds(challenge_ids, callback);
+}
 
 var tc; //TourChamp
 
@@ -534,7 +570,11 @@ function vm() {
   self.showUserPage = function(userID) {
     self.title('Themes');
     // console.log(tc.user().challenges_completed);
-    self.challenges_completed(defChallenges);
+    getUserChallenges(tc.user(), function(challenges) {
+        console.log(challenges);
+        self.challenges_completed(challenges);
+    });
+
     self.badges_received(defBadges);
 
     // getChallengeById(this.params.challenge_id, function(challenge) {
