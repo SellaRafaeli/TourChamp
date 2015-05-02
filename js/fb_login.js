@@ -23,10 +23,10 @@ function reloadUserData(){
   function fb_login() {
     Parse.FacebookUtils.logIn("public_profile,email", {
             success: function(user) {
-            if (!user.existed()) {
-                
-              alert("User signed up and logged in through Facebook!");
+            if (user.existed()) {                
+              //alert("User signed up and logged in through Facebook!");
                 FB.api('/me', function(me) {
+                    user.set('avatar_url', "http://graph.facebook.com/"+me.id+"/picture?type=square");
                     user.set("displayName", me.name);
                     user.set("email", me.email);
                     user.save();
