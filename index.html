@@ -319,7 +319,7 @@
                    <a data-bind='text: attributes.badge, attr: { href: "#theme/"+id }'></a>
                 </h3>
                     <div class="media-left">
-                        <img data-bind='attr: { src: $data.img || tc.randomImageSrc() }'>
+                        <img class="theme_img" data-bind='attr: { src: attributes.photo_url || tc.randomImageSrc() }'>
                     </div>
                     <div class="media-body media-middle">
                         <p data-bind='text: attributes.description'></p>
@@ -640,9 +640,12 @@ function vm() {
 
         this.get('#logout', function() {
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
-            tc.user(null);
-            localStorage.removeItem('user');
-            redirect('/#');
+            try {
+                tc.user(null);
+                localStorage.removeItem('user');
+            }
+            catch(e){}
+            //redirect('/#');
             //self.showUserPage(this.params.username);
         });
 

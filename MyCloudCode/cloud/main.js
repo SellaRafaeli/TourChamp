@@ -11,14 +11,15 @@ Parse.Cloud.define("mark_challenge_completed", function(request, response) {
    		res = "already completed chanllenge id " + challenge_id + " for user_id "  + user.id
    		console.log(res);
    }{
-   		res = "marking completed " + challenge_id + " for user_id "  + user.id
+   		var res = "marking completed " + challenge_id + " for user_id "  + user.id
    		var Challenge = Parse.Object.extend("Challenge");
 	  	var query = new Parse.Query(Challenge);
 	  	query.include("themes");
 		query.get(challenge_id, {
 			  success: function(challenge) {
 			   if (challenge){
-			   		challenges_helper.mark_challenge_completed(user, challenge)	   		
+			   		res = challenges_helper.mark_challenge_completed(user, challenge);
+			   		response.success(res);	   		
 			   }else{
 			   		response.success("didnt find that challenge in the db");		
 			   }
@@ -31,7 +32,7 @@ Parse.Cloud.define("mark_challenge_completed", function(request, response) {
    	   
    }
 
-   response.success(res);
+   
 });
 
 
