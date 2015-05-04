@@ -39,7 +39,7 @@
                 <li>
                     <img style='border-radius:100px' data-bind='attr: {src : tc.user().avatar_url }'/>
                 </li>            
-                <li data-bind='if: user().points && user().points > 0'>
+                <li data-bind='if: user() && user().points && user().points > 0'>
                     <a data-bind='text: user().displayName+" ("+(user().points || 0)+")", attr: { href: encodeURI("#user/"+user().username) }'></a>
                 </li>
                 <li>
@@ -198,8 +198,9 @@
     </div>
 </section>
 <!-- HERE1 -->
-<section class="container-fluid" id="section8">
-    <h1 class="text-center" data-bind='text: user().displayName'></h1>
+<section class="container-fluid" id="section8" data-bind="if: user()">
+     <h1 class="text-center" data-bind='text: user().displayName'></h1>
+
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
             <h2 class="text-center" data-bind='text: "Points: "+user().points'></h1>
@@ -210,7 +211,7 @@
                         <img data-bind='attr: { src: $data.img || tc.randomImageSrc() }'>
                     </div>
                 <div class="media-body media-middle">
-                <a data-bind='text: name, attr: { href: "#theme/"+id }'></a>
+                <a data-bind='text: attributes.badge, attr: { href: "#theme/"+id }'></a>
                 </div>
                 <br>
             </ul>            
@@ -226,18 +227,6 @@
                 </div>
                 <br>
             </ul>            
-
-
-<!--             <div class="row">
-                <div class='col-xs-11 col-xs-offset-1' data-bind='text: challenge_desc'></div>
-            </div>
-            <br>
-            <p class="text-center">
-                <img data-bind='attr: { src: $data.img || tc.randomImageSrc(400,400) }' class="img-responsive thumbnail center-block ">
-            </p>
-        </div>
- -->        
-
     </div>
 </section>
 
@@ -424,7 +413,6 @@ function getChallengeById(challengeId, callback) {
     var query = new Parse.Query("Challenge");
     query.get( challengeId, {  
         success: function(result) { 
-            console.log(result);
             if (callback) {
                 callback(result);
             }
@@ -457,6 +445,28 @@ function getAllChallenges(callback) {
     }
 }
 
+function getAllThemes(callback) {
+    var query = new Parse.Query("Theme");
+    if (tc.allThemes) {
+        callback(tc.allThemes);
+    } else {
+        query.find({
+            success: function(results) { 
+                var themeHash = {}
+                for (var i = 0; i < results.length; i++) {
+                    themeHash[results[i].id] = results[i]
+                }
+
+                tc.allThemes = themeHash;
+                callback(themeHash);
+            },  
+            error: function(error) {  
+                console.log(error); 
+            } 
+        });
+    }    
+}
+
 function getChallengeByIds(challengeIds, callback) {
     getAllChallenges(function(allChallenges) {
         var challenges = [];
@@ -468,9 +478,26 @@ function getChallengeByIds(challengeIds, callback) {
     })
 }
 
+function getThemesByIds(themeIds, callback) {
+    getAllThemes(function(allThemes) {
+        var themes = [];
+        for (var i = 0; i < themeIds.length; i++) {
+            themes.push(allThemes[themeIds[i]]);
+        }
+
+        callback(themes);
+    })
+}
+
+
 function getUserChallenges(user, callback) {
-    var challenge_ids = Object.keys(user.challenges_completed);
-    getChallengeByIds(challenge_ids, callback);
+    var challengeIds = Object.keys(user.challenges_completed);
+    getChallengeByIds(challengeIds, callback);
+}
+
+function getUserBadges(user, callback) {
+    var themeIds = Object.keys(user.themes_completed);
+    getThemesByIds(themeIds, callback)
 }
 
 var tc; //TourChamp
@@ -571,11 +598,16 @@ function vm() {
     self.title('Themes');
     // console.log(tc.user().challenges_completed);
     getUserChallenges(tc.user(), function(challenges) {
-        console.log(challenges);
         self.challenges_completed(challenges);
     });
 
-    self.badges_received(defBadges);
+    getUserBadges(tc.user(), function(badges) {
+        self.badges_received(badges);
+    });
+
+    // self.badges_received(defBadges);
+
+
 
     // getChallengeById(this.params.challenge_id, function(challenge) {
     //     self.challenges(userChallenges);
@@ -641,12 +673,11 @@ function vm() {
         this.get('#logout', function() {
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             try {
-                tc.user(null);
+                console.log("removing localstorage user");
                 localStorage.removeItem('user');
             }
-            catch(e){}
-            //redirect('/#');
-            //self.showUserPage(this.params.username);
+            catch(e){  console.log(e); }
+            redirect('/#');
         });
 
         this.get('#user/:username', function() {
@@ -655,6 +686,8 @@ function vm() {
         });
 
         this.get('', function() { 
+            if (! localStorage.getItem('user')) tc.user(null);
+
             if (tc.user()) {
                 redirect('/#city/Tel-Aviv');
                 return;
