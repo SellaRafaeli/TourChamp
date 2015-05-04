@@ -379,6 +379,7 @@
 <script>
 
 function getThemesForCity(city_name, callback) {
+    console.log("Getting themes for city");
     var Theme = Parse.Object.extend("Theme");
     var query = new Parse.Query(Theme);
     query.equalTo("city", city_name);
@@ -605,20 +606,7 @@ function vm() {
         self.badges_received(badges);
     });
 
-    // self.badges_received(defBadges);
-
-
-
-    // getChallengeById(this.params.challenge_id, function(challenge) {
-    //     self.challenges(userChallenges);
-    //     self.showChallenge(challenge);
-    // });
-
-
-//    self.themes(themes);
     show("#section8");
-
-//    alert('not done yet - for userID '+userID);
   }
 
   self.submitChallenge = function(challenge) {    
@@ -642,7 +630,6 @@ function vm() {
         this.get('#city/:city', function() {
             if (!self.user()) return this.redirect('/#');
             self.city(this.params.city);            
-            //$.get("/mail", { folder: this.params.folder }, self.showThemes);
 
             getThemesForCity(this.params.city, function(themes) {
                 self.showCity(themes);
@@ -673,7 +660,6 @@ function vm() {
         this.get('#logout', function() {
             //$.get("/mail", { folder: this.params.folder }, self.showThemes);
             try {
-                console.log("removing localstorage user");
                 localStorage.removeItem('user');
             }
             catch(e){  console.log(e); }
